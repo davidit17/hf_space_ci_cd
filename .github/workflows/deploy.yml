@@ -18,9 +18,8 @@ jobs:
       - name: Push to Hugging Face Space
         env:
           HF_TOKEN: ${{ secrets.HF }}
-          # Replace with your actual Space, e.g. "davidit17/grocery-classifier"
           HF_SPACE_ID: "davidit17/classifier"
         run: |
-          git remote add space "https://davidit17:${HF}@huggingface.co/spaces/${HF_SPACE_ID}"
+          git remote add space "https://davidit17:${HF_TOKEN}@huggingface.co/spaces/${HF_SPACE_ID}"
           git push --force space HEAD:main
  
