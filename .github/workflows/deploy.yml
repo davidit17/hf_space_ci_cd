@@ -1,0 +1,26 @@
+name: Deploy to Hugging Face Space
+ 
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+ 
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+ 
+      - name: Push to Hugging Face Space
+        env:
+          HF_TOKEN: ${{ secrets.HF }}
+          # Replace with your actual Space, e.g. "davidit17/grocery-classifier"
+          HF_SPACE_ID: "davidit17/classifier"
+        run: |
+          git remote add space "https://davidit17:${HF}@huggingface.co/spaces/${HF_SPACE_ID}"
+          git push --force space HEAD:main
+ 
