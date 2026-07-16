@@ -21,13 +21,3 @@ You can try the live application directly on Hugging Face Spaces:
 👉 **[Hebrew Grocery Classifier Space](https://huggingface.co/spaces/davidit17/classifier)**
 
 ---
-
-## 📸 Interface Preview
-
-<p align="center">
-  <img src="Capture1.JPG" alt="Hebrew Grocery Classifier Screenshot" width="100%">
-</p>
-
-<p align="center">
-  <img src="Capture2.JPG" alt="Hebrew Grocery Classifier Screenshot" width="100%">
-</p>
