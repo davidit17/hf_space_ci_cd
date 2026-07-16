@@ -25,9 +25,9 @@ You can try the live application directly on Hugging Face Spaces:
 ## 📸 Interface Preview
 
 <p align="center">
-  <img src="Capture1.jpg" alt="Hebrew Grocery Classifier Screenshot" width="100%">
+  <img src="Capture1.JPG" alt="Hebrew Grocery Classifier Screenshot" width="100%">
 </p>
 
 <p align="center">
-  <img src="Capture2.jpg" alt="Hebrew Grocery Classifier Screenshot" width="100%">
+  <img src="Capture2.JPG" alt="Hebrew Grocery Classifier Screenshot" width="100%">
 </p>
