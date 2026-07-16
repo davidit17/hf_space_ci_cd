@@ -1,14 +1,11 @@
 import time
-
-import spaces  # must be imported before torch/transformers on HF ZeroGPU Spaces
+import spaces  
 import numpy as np
 import gradio as gr
 from transformers import AutoTokenizer, pipeline
 from optimum.onnxruntime import ORTModelForFeatureExtraction
 
 MODEL_NAME = "davidit17/e5-grocery-finetuned-v2"
-# Tokenizer is unchanged by fine-tuning, and loading it from the base repo avoids
-# a transformers-version mismatch with the fine-tuned repo's saved tokenizer config.
 BASE_TOKENIZER_NAME = "intfloat/multilingual-e5-small"
 
 tokenizer = AutoTokenizer.from_pretrained(BASE_TOKENIZER_NAME)
@@ -23,6 +20,50 @@ EXAMPLE_ITEMS = [
     "נייר טואלט", "אבקת כביסה", "סבון כלים", "יוגורט תות", "טחינה גולמית",
 ]
 
+
+THEME = gr.themes.Default(
+    primary_hue="blue",
+    neutral_hue="slate",
+    # 1. Clean, modern system fonts
+    font=[gr.themes.GoogleFont("Inter"), "ui-sans-serif", "system-ui", "sans-serif"],
+).set(
+    # 2. Layout & Backgrounds (Subtle nesting for visual depth)
+    body_background_fill="#f9fafb",        # Soft light gray background
+    body_background_fill_dark="#0b0f19",   # Deep rich dark background
+    
+    background_fill_primary="#ffffff",     # App containers remain crisp white
+    background_fill_primary_dark="#111827",
+    
+    background_fill_secondary="#f3f4f6",   # Slightly darker for inner wells
+    background_fill_secondary_dark="#1f2937",
+    
+    # 3. Card/Block Styling
+    block_background_fill="#ffffff",
+    block_background_fill_dark="#111827",
+    block_border_width="1px",
+    block_border_color="#e5e7eb",
+    block_border_color_dark="#374151",
+    block_shadow="0 1px 3px 0 rgb(0 0 0 / 0.05)", # Tiny shadow makes blocks "pop"
+    block_radius="12px",                   # Slightly softer corners
+    
+    # 4. Form Inputs
+    input_background_fill="#ffffff",
+    input_background_fill_dark="#1f2937",
+    input_radius="8px",
+    border_color_primary="#d1d5db",
+    border_color_primary_dark="#4b5563",
+    
+    # 5. Primary Action Button
+    button_primary_background_fill="#2563eb",
+    button_primary_background_fill_hover="#1d4ed8",
+    button_primary_text_color="#ffffff",
+    button_primary_background_fill_dark="#3b82f6",
+    button_primary_background_fill_hover_dark="#2563eb",
+    
+    # 6. Smooth Transitions
+    link_text_color="#2563eb",
+    link_text_color_dark="#60a5fa"
+)
 CSS = """
 #items-textbox {
     max-width: 500px;
@@ -117,19 +158,20 @@ def make_model_column(label, run_fn):
         return btn, time_box, results, run_fn
 
 
-with gr.Blocks(title="Hebrew Grocery Item Classifier", css=CSS) as demo:
+with gr.Blocks(title="Hebrew Grocery Item Classifier", css=CSS, theme=gr.themes.Default(primary_hue="blue")) as demo:
     gr.Markdown("# Hebrew Grocery Item Classifier")
     gr.Markdown(
         "Add or remove lines below (one item per line), then classify with any "
         "or all of the models below to compare results and speed."
     )
 
-    items_input = gr.Textbox(
-        value="\n".join(EXAMPLE_ITEMS),
-        lines=20,
-        label="Grocery items (one per line)",
-        elem_id="items-textbox",
-    )
+    with gr.Column(elem_id="items-wrapper"):
+        items_input = gr.Textbox(
+            value="\n".join(EXAMPLE_ITEMS),
+            lines=20,
+            label="Grocery items (one per line)",
+            elem_id="items-textbox",
+        )
 
     with gr.Row():
         pt_btn, pt_time, pt_results, pt_fn = make_model_column("PyTorch", run_pytorch)
