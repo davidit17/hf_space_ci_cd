@@ -1,34 +1,42 @@
 name: Deploy to Hugging Face Space
- 
+
 on:
   push:
     branches:
       - main
   workflow_dispatch:
- 
+
 jobs:
   deploy:
     runs-on: ubuntu-latest
+
     steps:
       - name: Checkout repo
         uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
 
-      - name: Prepare repository for Hugging Face
+      - name: Prepare clean HF repository
         run: |
-          cp README_HF.md README.md
-          rm -rf images
- 
+          mkdir hf-deploy
+          rsync -av --exclude='.git' --exclude='images' ./ hf-deploy/
+          cp README_HF.md hf-deploy/README.md
+
       - name: Push to Hugging Face Space
         env:
           HF_TOKEN: ${{ secrets.HF }}
           HF_SPACE_ID: "davidit17/classifier"
 
         run: |
+          cd hf-deploy
+
+          git init
           git config user.name "github-actions"
           git config user.email "github-actions@github.com"
-          git remote add space "https://davidit17:${HF_TOKEN}@huggingface.co/spaces/${HF_SPACE_ID}"
-          git add -A
-          git commit -m "Prepare HF Space" || echo "Nothing to commit"
-          git push --force space HEAD:main
+
+          git add .
+          git commit -m "Deploy HF Space"
+
+          git branch -M main
+
+          git remote add origin "https://davidit17:${HF_TOKEN}@huggingface.co/spaces/${HF_SPACE_ID}"
+
+          git push --force origin main
