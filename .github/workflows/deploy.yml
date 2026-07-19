@@ -17,7 +17,7 @@ jobs:
       - name: Prepare clean HF repository
         run: |
           mkdir hf-deploy
-          rsync -av --exclude='.git' --exclude='images' ./ hf-deploy/
+          rsync -av --exclude=".git" --exclude="images" ./ hf-deploy/
           cp README_HF.md hf-deploy/README.md
 
       - name: Push to Hugging Face Space
@@ -37,6 +37,6 @@ jobs:
 
           git branch -M main
 
-          git remote add origin "https://davidit17:${HF_TOKEN}@huggingface.co/spaces/${HF_SPACE_ID}"
+          git remote add space "https://davidit17:${HF_TOKEN}@huggingface.co/spaces/${HF_SPACE_ID}"
 
-          git push --force origin main
+          git push --force space main
