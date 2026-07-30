@@ -1,4 +1,3 @@
-[![Deploy to Hugging Face Space](https://github.com/davidit17/hf_space_ci_cd/actions/workflows/deploy.yml/badge.svg)](https://github.com/davidit17/hf_space_ci_cd/actions/workflows/deploy.yml)
 ---
 title: Hebrew Grocery Classifier
 emoji: 🛒
@@ -9,6 +8,9 @@ sdk_version: "6.19.0"
 app_file: app.py
 pinned: false
 ---
+
+[![Deploy to Hugging Face Space](https://github.com/davidit17/hf_space_ci_cd/actions/workflows/deploy.yml/badge.svg)](https://github.com/davidit17/hf_space_ci_cd/actions/workflows/deploy.yml)
+
 
 # 🛒 Hebrew Grocery Item Classifier
 
