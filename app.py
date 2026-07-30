@@ -1,9 +1,9 @@
 import time
-import spaces  
 import numpy as np
 import gradio as gr
 from transformers import AutoTokenizer, pipeline
 from optimum.onnxruntime import ORTModelForFeatureExtraction
+
 
 MODEL_NAME = "davidit17/e5-grocery-finetuned-v2"
 BASE_TOKENIZER_NAME = "intfloat/multilingual-e5-small"
@@ -80,7 +80,7 @@ def parse_items(items_text):
 
 def get_pytorch_classifier():
     if "pytorch" not in _model_cache:
-        _model_cache["pytorch"] = pipeline("text-classification", model=MODEL_NAME, tokenizer=tokenizer)
+        _model_cache["pytorch"] = pipeline("text-classification", model=MODEL_NAME, tokenizer=tokenizer, device=-1)
     return _model_cache["pytorch"]
 
 
@@ -129,17 +129,14 @@ def _run(items_text, classify_fn):
     return results, f"{elapsed:.2f}s"
 
 
-@spaces.GPU
 def run_pytorch(items_text):
     return _run(items_text, classify_pytorch)
 
 
-@spaces.GPU
 def run_onnx_fp32(items_text):
     return _run(items_text, lambda items: classify_onnx(items, "onnx"))
 
 
-@spaces.GPU
 def run_onnx_int8(items_text):
     return _run(items_text, lambda items: classify_onnx(items, "onnx-int8"))
 
