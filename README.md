@@ -1,3 +1,4 @@
+[![Deploy to Hugging Face Space](https://github.com/davidit17/hf_space_ci_cd/actions/workflows/deploy.yml/badge.svg)](https://github.com/davidit17/hf_space_ci_cd/actions/workflows/deploy.yml)
 ---
 title: Hebrew Grocery Classifier
 emoji: 🛒
