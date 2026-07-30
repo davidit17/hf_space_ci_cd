@@ -3,6 +3,7 @@ import numpy as np
 import gradio as gr
 from transformers import AutoTokenizer, pipeline
 from optimum.onnxruntime import ORTModelForFeatureExtraction
+import spaces
 
 
 MODEL_NAME = "davidit17/e5-grocery-finetuned-v2"
@@ -129,14 +130,17 @@ def _run(items_text, classify_fn):
     return results, f"{elapsed:.2f}s"
 
 
+@spaces.GPU
 def run_pytorch(items_text):
     return _run(items_text, classify_pytorch)
 
 
+@spaces.GPU
 def run_onnx_fp32(items_text):
     return _run(items_text, lambda items: classify_onnx(items, "onnx"))
 
 
+@spaces.GPU
 def run_onnx_int8(items_text):
     return _run(items_text, lambda items: classify_onnx(items, "onnx-int8"))
 
